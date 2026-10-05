@@ -1,54 +1,74 @@
+/* =========================================================
+   CHIRKUT — YOUR WEDDING NOTE
+   MASTER JAVASCRIPT
+========================================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
-       PAGE LOADED
-    ===================================================== */
+       01. PAGE LOAD
+    ====================================================== */
 
-    document.body.classList.add("loaded");
+    document.body.classList.add("page-loaded");
 
 
     /* =====================================================
-       NAVBAR SCROLL
-    ===================================================== */
+       02. NAVBAR SCROLL EFFECT
+    ====================================================== */
 
-    const navbar = document.getElementById("navbar");
+    const header = document.querySelector(".site-header");
 
-    function handleNavbar() {
+    const handleHeaderScroll = () => {
 
-        if (!navbar) return;
+        if (!header) return;
 
-        if (window.scrollY > 50) {
-            navbar.classList.add("scrolled");
+        if (window.scrollY > 60) {
+            header.classList.add("scrolled");
         } else {
-            navbar.classList.remove("scrolled");
+            header.classList.remove("scrolled");
         }
-    }
 
-    handleNavbar();
+    };
 
-    window.addEventListener("scroll", handleNavbar, {
-        passive: true
-    });
+    handleHeaderScroll();
+
+    window.addEventListener(
+        "scroll",
+        handleHeaderScroll,
+        { passive: true }
+    );
 
 
     /* =====================================================
-       MOBILE MENU
-    ===================================================== */
+       03. MOBILE MENU
+    ====================================================== */
 
-    const menuToggle = document.getElementById("menuToggle");
-    const mobileMenu = document.getElementById("mobileMenu");
+    const menuToggle =
+        document.querySelector(".menu-toggle");
+
+    const mobileMenu =
+        document.querySelector(".mobile-menu");
 
     if (menuToggle && mobileMenu) {
 
         menuToggle.addEventListener("click", () => {
 
             mobileMenu.classList.toggle("active");
+
             menuToggle.classList.toggle("active");
 
-            document.body.classList.toggle("menu-open");
+            const isOpen =
+                mobileMenu.classList.contains("active");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                isOpen
+            );
 
         });
 
+
+        /* Close menu when clicking a link */
 
         const mobileLinks =
             mobileMenu.querySelectorAll("a");
@@ -58,10 +78,38 @@ document.addEventListener("DOMContentLoaded", () => {
             link.addEventListener("click", () => {
 
                 mobileMenu.classList.remove("active");
+
                 menuToggle.classList.remove("active");
-                document.body.classList.remove("menu-open");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
 
             });
+
+        });
+
+
+        /* Close menu when clicking outside */
+
+        document.addEventListener("click", (event) => {
+
+            if (
+                !mobileMenu.contains(event.target) &&
+                !menuToggle.contains(event.target)
+            ) {
+
+                mobileMenu.classList.remove("active");
+
+                menuToggle.classList.remove("active");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
 
         });
 
@@ -69,31 +117,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ESCAPE KEY — CLOSE MOBILE MENU
-    ===================================================== */
-
-    document.addEventListener("keydown", event => {
-
-        if (event.key === "Escape") {
-
-            mobileMenu?.classList.remove("active");
-            menuToggle?.classList.remove("active");
-
-            document.body.classList.remove("menu-open");
-
-        }
-
-    });
-
-
-    /* =====================================================
-       SCROLL REVEAL
-    ===================================================== */
+       04. SCROLL REVEAL
+    ====================================================== */
 
     const revealElements =
         document.querySelectorAll(".reveal");
 
-    if ("IntersectionObserver" in window) {
+    if (revealElements.length) {
 
         const revealObserver =
             new IntersectionObserver(
@@ -103,9 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         if (entry.isIntersecting) {
 
-                            entry.target.classList.add("active");
+                            entry.target.classList.add(
+                                "active"
+                            );
 
-                            observer.unobserve(entry.target);
+                            observer.unobserve(
+                                entry.target
+                            );
 
                         }
 
@@ -118,85 +152,58 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
+
         revealElements.forEach(element => {
+
             revealObserver.observe(element);
-        });
 
-    } else {
-
-        revealElements.forEach(element => {
-            element.classList.add("active");
         });
 
     }
 
 
     /* =====================================================
-       STAGGER ANIMATION
-    ===================================================== */
-
-    const staggerGroups =
-        document.querySelectorAll(".stagger");
-
-    if ("IntersectionObserver" in window) {
-
-        const staggerObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach(entry => {
-
-                        if (entry.isIntersecting) {
-
-                            entry.target.classList.add("active");
-
-                            observer.unobserve(entry.target);
-
-                        }
-
-                    });
-
-                },
-                {
-                    threshold: 0.15
-                }
-            );
-
-        staggerGroups.forEach(group => {
-            staggerObserver.observe(group);
-        });
-
-    }
-
-
-    /* =====================================================
-       HERO ANIMATION
-    ===================================================== */
+       05. HERO CONTENT INITIAL ANIMATION
+    ====================================================== */
 
     const heroContent =
-        document.querySelector(".hero-content");
+        document.querySelector(
+            ".hero-content, .page-hero-content"
+        );
 
     if (heroContent) {
 
         setTimeout(() => {
+
             heroContent.classList.add("active");
+
         }, 250);
 
     }
 
 
     /* =====================================================
-       SMOOTH INTERNAL LINKS
-    ===================================================== */
+       06. SMOOTH INTERNAL LINKS
+    ====================================================== */
 
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
+    const internalLinks =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+    internalLinks.forEach(link => {
 
         link.addEventListener("click", event => {
 
             const targetId =
                 link.getAttribute("href");
 
-            if (!targetId || targetId === "#") return;
+            if (
+                !targetId ||
+                targetId === "#"
+            ) {
+                return;
+            }
 
             const target =
                 document.querySelector(targetId);
@@ -205,17 +212,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             event.preventDefault();
 
-            const navbarHeight =
-                navbar ? navbar.offsetHeight : 0;
-
-            const targetPosition =
-                target.getBoundingClientRect().top +
-                window.scrollY -
-                navbarHeight;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: "smooth"
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
             });
 
         });
@@ -224,146 +223,165 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       ACTIVE NAVIGATION
-    ===================================================== */
+       07. ACTIVE NAVIGATION
+    ====================================================== */
 
     const currentPage =
         window.location.pathname
             .split("/")
             .pop() || "index.html";
 
-    document.querySelectorAll(".nav-links a").forEach(link => {
+    const navLinks =
+        document.querySelectorAll(
+            ".nav-links .nav-link"
+        );
 
-        const href =
+    navLinks.forEach(link => {
+
+        const linkPage =
             link.getAttribute("href");
 
-        link.classList.remove("active");
-
         if (
-            href === currentPage ||
+            linkPage === currentPage ||
             (
                 currentPage === "" &&
-                href === "index.html"
+                linkPage === "index.html"
             )
         ) {
+
             link.classList.add("active");
+
         }
 
     });
 
 
     /* =====================================================
-       IMAGE LAZY LOADING
-    ===================================================== */
+       08. IMAGE LAZY LOADING
+    ====================================================== */
 
     const images =
         document.querySelectorAll("img");
 
-    images.forEach((img, index) => {
+    images.forEach(image => {
 
-        /*
-         * Keep the first few important images eager
-         * for better hero loading.
-         */
+        if (!image.hasAttribute("loading")) {
 
-        if (index > 3) {
-            img.loading = "lazy";
+            image.setAttribute(
+                "loading",
+                "lazy"
+            );
+
         }
 
-        img.decoding = "async";
-
     });
 
 
     /* =====================================================
-       IMAGE ERROR HANDLER
-    ===================================================== */
-
-    images.forEach(img => {
-
-        img.addEventListener("error", () => {
-
-            img.style.background =
-                "linear-gradient(135deg,#171212,#2a1712)";
-
-        });
-
-    });
-
-
-    /* =====================================================
-       ANIMATED COUNTERS
-    ===================================================== */
+       09. ANIMATED COUNTERS
+    ====================================================== */
 
     const counters =
         document.querySelectorAll(
             ".stat-item strong, .testimonial-stat strong"
         );
 
-    function animateCounter(element) {
+    const animateCounter = element => {
 
-        const original =
+        const originalText =
             element.textContent.trim();
 
-        const numberMatch =
-            original.match(/[\d.]+/);
+        /*
+         * Handle symbols like:
+         * 100+
+         * 5.0
+         * 100%
+         */
 
-        if (!numberMatch) return;
+        const numericMatch =
+            originalText.match(
+                /[\d.]+/
+            );
+
+        if (!numericMatch) return;
 
         const target =
-            parseFloat(numberMatch[0]);
+            parseFloat(numericMatch[0]);
 
         if (isNaN(target)) return;
 
+        const prefix =
+            originalText.slice(
+                0,
+                originalText.indexOf(
+                    numericMatch[0]
+                )
+            );
+
         const suffix =
-            original.replace(numberMatch[0], "");
+            originalText.slice(
+                originalText.indexOf(
+                    numericMatch[0]
+                ) + numericMatch[0].length
+            );
+
+        const hasDecimal =
+            numericMatch[0].includes(".");
 
         const duration = 1600;
 
         const startTime =
             performance.now();
 
-        function updateCounter(currentTime) {
+        const update = currentTime => {
+
+            const elapsed =
+                currentTime - startTime;
 
             const progress =
                 Math.min(
-                    (currentTime - startTime) /
-                    duration,
+                    elapsed / duration,
                     1
                 );
 
-            const eased =
-                1 - Math.pow(1 - progress, 3);
+            /*
+             * Smooth ease-out
+             */
 
-            const current =
+            const eased =
+                1 - Math.pow(
+                    1 - progress,
+                    4
+                );
+
+            const currentValue =
                 target * eased;
 
             element.textContent =
-                (Number.isInteger(target)
-                    ? Math.floor(current)
-                    : current.toFixed(1)
-                ) + suffix;
+                prefix +
+                (
+                    hasDecimal
+                        ? currentValue.toFixed(1)
+                        : Math.floor(currentValue)
+                ) +
+                suffix;
 
             if (progress < 1) {
 
                 requestAnimationFrame(
-                    updateCounter
+                    update
                 );
-
-            } else {
-
-                element.textContent =
-                    target + suffix;
 
             }
 
-        }
+        };
 
-        requestAnimationFrame(updateCounter);
-    }
+        requestAnimationFrame(update);
+
+    };
 
 
-    if ("IntersectionObserver" in window) {
+    if (counters.length) {
 
         const counterObserver =
             new IntersectionObserver(
@@ -371,7 +389,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     entries.forEach(entry => {
 
-                        if (entry.isIntersecting) {
+                        if (
+                            entry.isIntersecting
+                        ) {
 
                             animateCounter(
                                 entry.target
@@ -391,109 +411,141 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
+
         counters.forEach(counter => {
+
             counterObserver.observe(counter);
+
         });
 
     }
 
 
     /* =====================================================
-       HERO PARALLAX
-    ===================================================== */
+       10. PARALLAX HERO
+    ====================================================== */
 
     const heroImages =
         document.querySelectorAll(
-            ".hero-background img, .hero-media img"
+            ".hero-image, .page-hero-media img"
         );
 
     if (
         heroImages.length &&
-        window.matchMedia("(min-width: 769px)").matches
+        !window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
     ) {
 
-        let ticking = false;
-
-        window.addEventListener("scroll", () => {
-
-            if (ticking) return;
-
-            window.requestAnimationFrame(() => {
+        window.addEventListener(
+            "scroll",
+            () => {
 
                 const scroll =
                     window.scrollY;
 
                 heroImages.forEach(image => {
 
+                    const parent =
+                        image.closest(
+                            ".hero, .page-hero"
+                        );
+
+                    if (!parent) return;
+
+                    const rect =
+                        parent.getBoundingClientRect();
+
+                    if (
+                        rect.bottom < 0 ||
+                        rect.top > window.innerHeight
+                    ) {
+                        return;
+                    }
+
+                    const movement =
+                        scroll * 0.12;
+
                     image.style.transform =
-                        `translateY(${scroll * 0.12}px) scale(1.02)`;
+                        `translateY(${movement}px) scale(1.05)`;
 
                 });
 
-                ticking = false;
-
-            });
-
-            ticking = true;
-
-        }, {
-            passive: true
-        });
+            },
+            { passive: true }
+        );
 
     }
 
 
     /* =====================================================
-       CARD TILT EFFECT
-    ===================================================== */
+       11. IMAGE HOVER TILT
+    ====================================================== */
 
     const tiltCards =
         document.querySelectorAll(
-            ".portfolio-item, .service-card, .team-card, .location-card"
+            ".portfolio-item, .service-card, .commercial-card"
         );
 
-    if (
-        window.matchMedia("(min-width: 769px)").matches
-    ) {
+    const isTouchDevice =
+        window.matchMedia(
+            "(hover: none)"
+        ).matches;
+
+    if (!isTouchDevice) {
 
         tiltCards.forEach(card => {
 
-            card.addEventListener("mousemove", event => {
+            card.addEventListener(
+                "mousemove",
+                event => {
 
-                const rect =
-                    card.getBoundingClientRect();
+                    const rect =
+                        card.getBoundingClientRect();
 
-                const x =
-                    event.clientX - rect.left;
+                    const x =
+                        event.clientX -
+                        rect.left;
 
-                const y =
-                    event.clientY - rect.top;
+                    const y =
+                        event.clientY -
+                        rect.top;
 
-                const centerX =
-                    rect.width / 2;
+                    const centerX =
+                        rect.width / 2;
 
-                const centerY =
-                    rect.height / 2;
+                    const centerY =
+                        rect.height / 2;
 
-                const rotateX =
-                    ((y - centerY) / centerY) * -2;
+                    const rotateX =
+                        (y - centerY) /
+                        centerY *
+                        -2;
 
-                const rotateY =
-                    ((x - centerX) / centerX) * 2;
+                    const rotateY =
+                        (x - centerX) /
+                        centerX *
+                        2;
 
-                card.style.transform =
-                    `perspective(900px)
-                     rotateX(${rotateX}deg)
-                     rotateY(${rotateY}deg)
-                     translateY(-4px)`;
+                    card.style.transform =
+                        `perspective(900px)
+                         rotateX(${rotateX}deg)
+                         rotateY(${rotateY}deg)
+                         translateY(-6px)`;
 
-            });
+                }
+            );
 
-            card.addEventListener("mouseleave", () => {
 
-                card.style.transform = "";
+            card.addEventListener(
+                "mouseleave",
+                () => {
 
-            });
+                    card.style.transform =
+                        "";
+
+                }
+            );
 
         });
 
@@ -501,44 +553,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       MAGNETIC BUTTON EFFECT
-    ===================================================== */
+       12. MAGNETIC BUTTON EFFECT
+    ====================================================== */
 
     const magneticButtons =
         document.querySelectorAll(
-            ".btn"
+            ".btn, .booking-whatsapp, .direct-contact-button"
         );
 
-    if (
-        window.matchMedia("(min-width: 769px)").matches
-    ) {
+    if (!isTouchDevice) {
 
         magneticButtons.forEach(button => {
 
-            button.addEventListener("mousemove", event => {
+            button.addEventListener(
+                "mousemove",
+                event => {
 
-                const rect =
-                    button.getBoundingClientRect();
+                    const rect =
+                        button.getBoundingClientRect();
 
-                const x =
-                    event.clientX - rect.left -
-                    rect.width / 2;
+                    const x =
+                        event.clientX -
+                        rect.left -
+                        rect.width / 2;
 
-                const y =
-                    event.clientY - rect.top -
-                    rect.height / 2;
+                    const y =
+                        event.clientY -
+                        rect.top -
+                        rect.height / 2;
 
-                button.style.transform =
-                    `translate(${x * 0.08}px,
-                               ${y * 0.08}px)`;
+                    button.style.transform =
+                        `translate(${x * 0.08}px,
+                                   ${y * 0.08}px)`;
 
-            });
+                }
+            );
 
-            button.addEventListener("mouseleave", () => {
 
-                button.style.transform = "";
+            button.addEventListener(
+                "mouseleave",
+                () => {
 
-            });
+                    button.style.transform = "";
+
+                }
+            );
 
         });
 
@@ -546,12 +605,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CURSOR GLOW
-    ===================================================== */
+       13. CURSOR GLOW
+    ====================================================== */
 
-    if (
-        window.matchMedia("(pointer:fine)").matches
-    ) {
+    if (!isTouchDevice) {
 
         const cursorGlow =
             document.createElement("div");
@@ -559,93 +616,177 @@ document.addEventListener("DOMContentLoaded", () => {
         cursorGlow.className =
             "cursor-glow";
 
-        document.body.appendChild(cursorGlow);
+        document.body.appendChild(
+            cursorGlow
+        );
 
-        let cursorX = 0;
-        let cursorY = 0;
 
-        let glowX = 0;
-        let glowY = 0;
+        const glowStyle =
+            document.createElement("style");
 
-        window.addEventListener("mousemove", event => {
+        glowStyle.textContent = `
 
-            cursorX = event.clientX;
-            cursorY = event.clientY;
+            .cursor-glow {
 
-        });
+                position: fixed;
 
-        function animateGlow() {
+                width: 180px;
+                height: 180px;
 
-            glowX +=
-                (cursorX - glowX) * 0.12;
+                border-radius: 50%;
 
-            glowY +=
-                (cursorY - glowY) * 0.12;
+                pointer-events: none;
 
-            cursorGlow.style.left =
-                `${glowX}px`;
+                z-index: 9998;
 
-            cursorGlow.style.top =
-                `${glowY}px`;
+                background:
+                    radial-gradient(
+                        circle,
+                        rgba(255,90,54,0.08)
+                        0%,
+                        rgba(255,90,54,0.025)
+                        35%,
+                        transparent 70%
+                    );
 
-            requestAnimationFrame(
-                animateGlow
-            );
+                transform:
+                    translate(-50%, -50%);
 
-        }
+                transition:
+                    left 0.18s ease-out,
+                    top 0.18s ease-out;
 
-        animateGlow();
+                opacity: 0;
+
+            }
+
+            body:hover .cursor-glow {
+                opacity: 1;
+            }
+
+        `;
+
+        document.head.appendChild(
+            glowStyle
+        );
+
+
+        window.addEventListener(
+            "mousemove",
+            event => {
+
+                cursorGlow.style.left =
+                    `${event.clientX}px`;
+
+                cursorGlow.style.top =
+                    `${event.clientY}px`;
+
+            },
+            { passive: true }
+        );
 
     }
 
 
     /* =====================================================
-       FORM FOCUS EFFECT
-    ===================================================== */
+       14. ACTIVE LINK HOVER LINE
+    ====================================================== */
 
-    const formInputs =
+    const allLinks =
         document.querySelectorAll(
-            ".form-group input, .form-group textarea, .form-group select"
+            "a"
         );
 
-    formInputs.forEach(input => {
+    allLinks.forEach(link => {
 
-        input.addEventListener("focus", () => {
+        link.addEventListener(
+            "mouseenter",
+            () => {
 
-            input.parentElement.classList.add(
-                "focused"
-            );
+                link.classList.add(
+                    "link-hover"
+                );
 
-        });
+            }
+        );
 
-        input.addEventListener("blur", () => {
+        link.addEventListener(
+            "mouseleave",
+            () => {
 
-            input.parentElement.classList.remove(
-                "focused"
-            );
+                link.classList.remove(
+                    "link-hover"
+                );
 
-        });
+            }
+        );
 
     });
 
 
     /* =====================================================
-       ENQUIRY FORM
-    ===================================================== */
+       15. FORM INTERACTION
+    ====================================================== */
 
-    const enquiryForm =
-        document.getElementById("enquiryForm");
+    const forms =
+        document.querySelectorAll(
+            ".enquiry-form"
+        );
 
-    if (enquiryForm) {
+    forms.forEach(form => {
 
-        enquiryForm.addEventListener(
+        const inputs =
+            form.querySelectorAll(
+                "input, textarea, select"
+            );
+
+
+        inputs.forEach(input => {
+
+            input.addEventListener(
+                "focus",
+                () => {
+
+                    input
+                        .closest(".form-group")
+                        ?.classList.add(
+                            "focused"
+                        );
+
+                }
+            );
+
+
+            input.addEventListener(
+                "blur",
+                () => {
+
+                    input
+                        .closest(".form-group")
+                        ?.classList.remove(
+                            "focused"
+                        );
+
+                }
+            );
+
+        });
+
+
+        /*
+         * Front-end only form handling.
+         * Actual submission can later be connected
+         * to Formspree / EmailJS / backend.
+         */
+
+        form.addEventListener(
             "submit",
             event => {
 
                 event.preventDefault();
 
                 const submitButton =
-                    enquiryForm.querySelector(
+                    form.querySelector(
                         ".form-submit"
                     );
 
@@ -654,10 +795,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 const originalText =
                     submitButton.innerHTML;
 
-                submitButton.disabled = true;
-
                 submitButton.innerHTML =
                     "Sending...";
+
+                submitButton.disabled =
+                    true;
+
 
                 setTimeout(() => {
 
@@ -665,14 +808,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         "Enquiry Received ✓";
 
                     submitButton.style.background =
-                        "#2f8f5b";
+                        "#1c9b62";
+
 
                     setTimeout(() => {
 
-                        enquiryForm.reset();
-
-                        submitButton.disabled =
-                            false;
+                        form.reset();
 
                         submitButton.innerHTML =
                             originalText;
@@ -680,99 +821,289 @@ document.addEventListener("DOMContentLoaded", () => {
                         submitButton.style.background =
                             "";
 
-                    }, 1800);
+                        submitButton.disabled =
+                            false;
+
+                    }, 2200);
 
                 }, 900);
 
             }
         );
 
-    }
+    });
 
 
     /* =====================================================
-       CURRENT YEAR
-    ===================================================== */
+       16. CURRENT YEAR
+    ====================================================== */
 
-    const currentYear =
-        document.getElementById("currentYear");
+    const year =
+        new Date().getFullYear();
 
-    if (currentYear) {
+    const footerTexts =
+        document.querySelectorAll(
+            ".footer-bottom p"
+        );
 
-        currentYear.textContent =
-            new Date().getFullYear();
+    footerTexts.forEach(text => {
 
-    }
+        text.innerHTML =
+            text.innerHTML.replace(
+                /©\s*\d{4}/,
+                `© ${year}`
+            );
+
+    });
 
 
     /* =====================================================
-       PAGE TRANSITION
-    ===================================================== */
+       17. IMAGE ERROR HANDLER
+    ====================================================== */
 
-    document.querySelectorAll(
-        'a[href$=".html"]'
-    ).forEach(link => {
+    images.forEach(image => {
 
-        link.addEventListener("click", event => {
+        image.addEventListener(
+            "error",
+            () => {
 
-            const href =
-                link.getAttribute("href");
+                image.classList.add(
+                    "image-error"
+                );
 
-            if (
-                !href ||
-                href.startsWith("#") ||
-                link.target === "_blank" ||
-                event.ctrlKey ||
-                event.metaKey ||
-                event.shiftKey ||
-                event.altKey
-            ) {
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       18. PAGE TRANSITION
+    ====================================================== */
+
+    const pageTransitionStyle =
+        document.createElement("style");
+
+    pageTransitionStyle.textContent = `
+
+        body {
+
+            opacity: 0;
+
+            transition:
+                opacity 0.55s ease;
+
+        }
+
+        body.page-loaded {
+
+            opacity: 1;
+
+        }
+
+        body.page-exiting {
+
+            opacity: 0;
+
+        }
+
+        .image-error {
+
+            min-height: 250px;
+
+            object-fit: cover;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b1513,
+                    #30201b
+                );
+
+        }
+
+    `;
+
+    document.head.appendChild(
+        pageTransitionStyle
+    );
+
+
+    /*
+     * Allow page to become visible
+     */
+
+    requestAnimationFrame(() => {
+
+        document.body.classList.add(
+            "page-loaded"
+        );
+
+    });
+
+
+    /* =====================================================
+       19. PAGE EXIT TRANSITION
+    ====================================================== */
+
+    const pageLinks =
+        document.querySelectorAll(
+            "a[href]"
+        );
+
+    pageLinks.forEach(link => {
+
+        const href =
+            link.getAttribute("href");
+
+        if (
+            !href ||
+            href.startsWith("#") ||
+            href.startsWith("mailto:") ||
+            href.startsWith("tel:") ||
+            href.startsWith("https://wa.me") ||
+            href.startsWith("https://instagram.com") ||
+            href.startsWith("https://facebook.com") ||
+            link.target === "_blank"
+        ) {
+            return;
+        }
+
+
+        link.addEventListener(
+            "click",
+            event => {
+
+                const url =
+                    new URL(
+                        href,
+                        window.location.href
+                    );
+
+                if (
+                    url.origin !==
+                    window.location.origin
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                document.body.classList.add(
+                    "page-exiting"
+                );
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        url.href;
+
+                }, 450);
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       20. ESC KEY — CLOSE MOBILE MENU
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key !== "Escape") {
                 return;
             }
 
-            event.preventDefault();
+            if (
+                mobileMenu &&
+                mobileMenu.classList.contains(
+                    "active"
+                )
+            ) {
 
-            document.body.style.opacity = "0";
+                mobileMenu.classList.remove(
+                    "active"
+                );
 
-            setTimeout(() => {
+                menuToggle?.classList.remove(
+                    "active"
+                );
 
-                window.location.href = href;
+            }
 
-            }, 250);
-
-        });
-
-    });
-
-
-    /* =====================================================
-       PAGE FADE IN
-    ===================================================== */
-
-    window.addEventListener("pageshow", () => {
-
-        document.body.style.opacity = "1";
-
-    });
+        }
+    );
 
 
     /* =====================================================
-       PRELOAD HERO IMAGE
-    ===================================================== */
+       21. MOBILE MENU ANIMATION
+    ====================================================== */
 
-    const heroImage =
+    const mobileMenuStyle =
+        document.createElement("style");
+
+    mobileMenuStyle.textContent = `
+
+        .menu-toggle.active span:nth-child(1) {
+
+            transform:
+                translateY(6px)
+                rotate(45deg);
+
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+
+            opacity: 0;
+
+            transform:
+                translateX(10px);
+
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+
+            transform:
+                translateY(-6px)
+                rotate(-45deg);
+
+        }
+
+        .form-group.focused label {
+
+            color:
+                var(--accent);
+
+        }
+
+    `;
+
+    document.head.appendChild(
+        mobileMenuStyle
+    );
+
+
+    /* =====================================================
+       22. PRELOAD HERO IMAGE
+    ====================================================== */
+
+    const heroSource =
         document.querySelector(
-            ".hero img, .page-hero img"
+            ".hero-image, .page-hero-media img"
         );
 
-    if (heroImage && heroImage.src) {
+    if (heroSource) {
 
         const preload =
             new Image();
 
         preload.src =
-            heroImage.currentSrc ||
-            heroImage.src;
+            heroSource.currentSrc ||
+            heroSource.src;
 
     }
 
