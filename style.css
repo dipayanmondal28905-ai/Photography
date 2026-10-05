@@ -4813,55 +4813,29 @@ button {
    HOME HERO FULL BACKGROUND
 ========================= */
 
-.hero {
-    position: relative;
-    min-height: 100vh;
-    height: 100vh;
-    overflow: hidden;
-    background: #080606;
-}
-
 .hero-bg {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     z-index: 0;
+}
+
+.hero-bg picture {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .hero-bg img {
     width: 100%;
     height: 100%;
+    display: block;
     object-fit: cover;
     object-position: center;
-    display: block;
     transform: scale(1.04);
     animation: heroZoom 12s ease-out forwards;
-}
-
-/* Dark cinematic overlay — text readable থাকবে */
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(5, 3, 3, 0.88) 0%,
-            rgba(5, 3, 3, 0.58) 38%,
-            rgba(5, 3, 3, 0.20) 70%,
-            rgba(5, 3, 3, 0.42) 100%
-        ),
-        linear-gradient(
-            0deg,
-            rgba(5, 3, 3, 0.60),
-            transparent 55%
-        );
-}
-
-.hero-content,
-.scroll-indicator {
-    position: relative;
-    z-index: 2;
 }
 
 @keyframes heroZoom {
@@ -4874,29 +4848,11 @@ button {
     }
 }
 
-/* Mobile */
+/* MOBILE */
 @media (max-width: 768px) {
 
-    .hero {
-        min-height: 100svh;
-        height: 100svh;
-    }
-
     .hero-bg img {
-        object-position: 65% center;
+        object-position: center center;
     }
 
-    .hero-overlay {
-        background:
-            linear-gradient(
-                90deg,
-                rgba(5, 3, 3, 0.82),
-                rgba(5, 3, 3, 0.42)
-            ),
-            linear-gradient(
-                0deg,
-                rgba(5, 3, 3, 0.72),
-                transparent 60%
-            );
-    }
 }
