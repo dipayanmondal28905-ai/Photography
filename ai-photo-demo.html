@@ -534,7 +534,12 @@ const input =
 
 const preview =
     document.getElementById('selfiePreview');
+    
+const placeholder =
+    document.getElementById('selfiePlaceholder');
 
+const buttonText =
+    document.getElementById('uploadButtonText');
 
 const btn =
     document.getElementById('findBtn');
@@ -560,16 +565,21 @@ input.addEventListener(
         const file =
             input.files[0];
 
-        if(file){
+        if (!file) return;
 
-            preview.src =
-                URL.createObjectURL(file);
+        preview.src =
+            URL.createObjectURL(file);
 
-        }
+        preview.hidden = false;
+
+        placeholder.style.display =
+            'none';
+
+        buttonText.textContent =
+            'Change Selfie';
 
     }
 );
-
 
 
 /* ================================
