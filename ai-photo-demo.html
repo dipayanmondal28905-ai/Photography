@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chirkut AI Photo Delivery — Demo</title>
+
+<style>
+:root{
+    --bg:#0b0909;
+    --card:#151111;
+    --muted:#aaa29b;
+    --text:#f8f4ed;
+    --accent:#ff5a36;
+    --gold:#e8bd72;
+    --border:rgba(255,255,255,.12)
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+.wrap{
+    width:min(1120px,92%);
+    margin:auto;
+}
+
+.hero{
+    padding:90px 0 55px;
+    text-align:center;
+    background:
+        radial-gradient(
+            circle at 50% 0,
+            rgba(255,90,54,.16),
+            transparent 40%
+        );
+}
+
+.eyebrow{
+    font-size:11px;
+    letter-spacing:.22em;
+    color:var(--accent);
+    font-weight:700;
+}
+
+.hero h1{
+    font-size:clamp(42px,7vw,82px);
+    line-height:.95;
+    font-weight:400;
+    margin:18px 0;
+}
+
+.hero h1 span{
+    color:var(--accent);
+}
+
+.hero p{
+    max-width:680px;
+    margin:0 auto;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin:35px 0 55px;
+}
+
+.step,
+.panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+}
+
+.step{
+    padding:24px;
+}
+
+.num{
+    color:var(--gold);
+    font-size:12px;
+    letter-spacing:.15em;
+}
+
+.step h3{
+    margin:10px 0 5px;
+}
+
+.step p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+.panel{
+    padding:28px;
+    margin-bottom:40px;
+}
+
+.panel h2{
+    font-weight:400;
+    margin:0 0 8px;
+}
+
+.panel>p{
+    color:var(--muted);
+    margin-top:0;
+}
+
+.upload-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.drop{
+    border:1px dashed rgba(232,189,114,.5);
+    border-radius:16px;
+    padding:22px;
+    min-height:280px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.02);
+}
+
+.drop img{
+    max-height:210px;
+    max-width:100%;
+    border-radius:12px;
+    object-fit:cover;
+    margin-bottom:14px;
+}
+
+.drop input{
+    width:100%;
+}
+
+.btn{
+    margin-top:14px;
+    border:0;
+    background:var(--accent);
+    color:white;
+    padding:14px 22px;
+    border-radius:999px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.status{
+    margin:18px 0;
+    padding:14px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    color:var(--muted);
+    display:none;
+}
+
+.status.show{
+    display:block;
+}
+
+.results{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:22px;
+}
+
+.result{
+    overflow:hidden;
+    border-radius:14px;
+    background:#0e0c0c;
+    border:1px solid var(--border);
+}
+
+.result img{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+}
+
+.result div{
+    padding:13px;
+}
+
+.result small{
+    color:var(--muted);
+}
+
+.qr-box{
+    display:flex;
+    gap:28px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.qr{
+    width:150px;
+    height:150px;
+
+    background:
+        repeating-conic-gradient(
+            #111 0 25%,
+            #fff 0 50%
+        ) 0/20px 20px;
+
+    border:12px solid white;
+}
+
+.note{
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.7;
+    max-width:650px;
+}
+
+.footer{
+    padding:35px 0 60px;
+    text-align:center;
+    color:#777;
+    font-size:12px;
+}
+
+@media(max-width:760px){
+
+    .steps,
+    .upload-grid,
+    .results{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding-top:55px;
+    }
+
+    .panel{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+
+    <div class="wrap">
+
+        <div class="eyebrow">
+            CHIRKUT · AI PHOTO DELIVERY DEMO
+        </div>
+
+        <h1>
+            Find Your <span>Photos.</span>
+        </h1>
+
+        <p>
+            Scan the event QR, upload a selfie, and this
+            practice demo uses browser-side face recognition
+            to find matching event photos.
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="wrap">
+
+    <!-- STEPS -->
+
+    <section class="steps">
+
+        <div class="step">
+
+            <div class="num">
+                01 · EVENT
+            </div>
+
+            <h3>
+                Scan the QR
+            </h3>
+
+            <p>
+                Guests enter the private event gallery
+                from a QR code placed at the venue.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="num">
+                02 · SELFIE
+            </div>
+
+            <h3>
+                Take a Selfie
+            </h3>
+
+            <p>
+                Upload a clear face photo. The demo extracts
+                a face descriptor locally in the browser.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="num">
+                03 · MATCH
+            </div>
+
+            <h3>
+                Get Your Photos
+            </h3>
+
+            <p>
+                The selfie descriptor is compared with
+                indexed event-photo descriptors.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- EVENT ACCESS -->
+
+    <section class="panel">
+
+        <h2>
+            Event Access
+        </h2>
+
+        <p>
+            Practice event:
+            <strong>
+                Arjun & Abhinaya · Wedding
+            </strong>
+        </p>
+
+
+        <div class="qr-box">
+
+            <div
+                class="qr"
+                aria-label="Demo QR placeholder">
+            </div>
+
+
+            <div class="note">
+
+                This is a visual QR placeholder for
+                the prototype.
+
+                In the production version, it would
+                contain a unique event URL such as:
+
+                <code>
+                    /event/ARJUN-ABHINAYA
+                </code>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FIND PHOTOS -->
+
+    <section class="panel">
+
+        <h2>
+            Find My Photos
+        </h2>
+
+        <p>
+            Use the sample wedding image as both the
+            event gallery and selfie to test a positive match.
+        </p>
+
+
+        <div class="upload-grid">
+
+
+            <!-- SELFIE -->
+
+            <div class="drop">
+
+                <img
+                    id="selfiePreview"
+                    src="sample-event-photo.png"
+                    alt="Selfie preview"
+                >
+
+                <label>
+
+                    <strong>
+                        Guest selfie
+                    </strong>
+
+                    <br>
+
+                    <input
+                        id="selfieInput"
+                        type="file"
+                        accept="image/*"
+                    >
+
+                </label>
+
+            </div>
+
+
+            <!-- EVENT PHOTO -->
+
+            <div class="drop">
+
+                <img
+                    src="sample-event-photo.png"
+                    alt="Sample event photo"
+                >
+
+                <strong>
+                    Indexed event photo
+                </strong>
+
+                <span
+                    style="
+                        color:#aaa;
+                        font-size:13px;
+                        margin-top:6px;
+                    "
+                >
+                    1 demo photo available
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="findBtn"
+            class="btn"
+        >
+            Find My Photos
+        </button>
+
+
+        <div
+            id="status"
+            class="status"
+        ></div>
+
+
+        <div
+            id="results"
+            class="results"
+        ></div>
+
+    </section>
+
+</main>
+
+
+<div class="footer">
+
+    Prototype only · Face matching runs
+    in the browser for this demo.
+
+</div>
+
+
+<!-- FACE API -->
+
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+
+
+<script>
+
+const MODEL =
+    'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+
+
+const input =
+    document.getElementById('selfieInput');
+
+
+const preview =
+    document.getElementById('selfiePreview');
+
+
+const btn =
+    document.getElementById('findBtn');
+
+
+const status =
+    document.getElementById('status');
+
+
+const results =
+    document.getElementById('results');
+
+
+
+/* ================================
+   SELFIE PREVIEW
+================================ */
+
+input.addEventListener(
+    'change',
+    () => {
+
+        const file =
+            input.files[0];
+
+        if(file){
+
+            preview.src =
+                URL.createObjectURL(file);
+
+        }
+
+    }
+);
+
+
+
+/* ================================
+   STATUS
+================================ */
+
+function setStatus(message){
+
+    status.textContent =
+        message;
+
+    status.classList.add('show');
+
+}
+
+
+
+/* ================================
+   LOAD AI MODELS
+================================ */
+
+async function loadModels(){
+
+    setStatus(
+        'Loading face-recognition models…'
+    );
+
+
+    await faceapi.nets.tinyFaceDetector
+        .loadFromUri(MODEL);
+
+
+    await faceapi.nets.faceLandmark68Net
+        .loadFromUri(MODEL);
+
+
+    await faceapi.nets.faceRecognitionNet
+        .loadFromUri(MODEL);
+
+}
+
+
+
+/* ================================
+   GET FACE DESCRIPTOR
+================================ */
+
+async function descriptorFrom(src){
+
+    const img =
+        await faceapi.fetchImage(src);
+
+
+    const result =
+        await faceapi
+            .detectSingleFace(
+                img,
+                new faceapi.TinyFaceDetectorOptions()
+            )
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+
+    return result;
+
+}
+
+
+
+/* ================================
+   MAIN FUNCTION
+================================ */
+
+async function run(){
+
+    btn.disabled = true;
+
+    results.innerHTML = '';
+
+
+    try{
+
+        /* Load AI */
+
+        await loadModels();
+
+
+        /* Get selfie */
+
+        const selfie =
+            input.files[0]
+                ? await faceapi.bufferToImage(
+                    input.files[0]
+                )
+                : await faceapi.fetchImage(
+                    'sample-event-photo.png'
+                );
+
+
+        /* Detect selfie face */
+
+        const query =
+            await faceapi
+                .detectSingleFace(
+                    selfie,
+                    new faceapi.TinyFaceDetectorOptions()
+                )
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+
+
+        if(!query){
+
+            setStatus(
+                'No clear face detected. Try a front-facing, well-lit selfie.'
+            );
+
+            btn.disabled = false;
+
+            return;
+
+        }
+
+
+        /* Index event photo */
+
+        setStatus(
+            'Indexing the event gallery and comparing faces…'
+        );
+
+
+        const photo =
+            await descriptorFrom(
+                'sample-event-photo.png'
+            );
+
+
+        if(!photo){
+
+            setStatus(
+                'No face detected in the event photo.'
+            );
+
+            btn.disabled = false;
+
+            return;
+
+        }
+
+
+        /* Compare faces */
+
+        const distance =
+            faceapi.euclideanDistance(
+                query.descriptor,
+                photo.descriptor
+            );
+
+
+        /*
+            Lower distance =
+            better match.
+        */
+
+        const threshold =
+            0.55;
+
+
+        const matched =
+            distance < threshold;
+
+
+        /* Result */
+
+        setStatus(
+
+            matched
+
+                ? `Match found · similarity score: ${(1 - distance).toFixed(2)}`
+
+                : `No confident match · distance: ${distance.toFixed(2)}`
+
+        );
+
+
+        /* Show matched photo */
+
+        if(matched){
+
+            results.innerHTML = `
+
+                <article class="result">
+
+                    <img
+                        src="sample-event-photo.png"
+                        alt="Matched wedding photo"
+                    >
+
+                    <div>
+
+                        <strong>
+                            Wedding Portrait
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            AI face match · demo result
+                        </small>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        }
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            'Demo could not start. Make sure you are connected to the internet and open this page from a local web server (not file://).'
+        );
+
+    }
+
+
+    finally{
+
+        btn.disabled = false;
+
+    }
+
+}
+
+
+
+/* ================================
+   BUTTON
+================================ */
+
+btn.addEventListener(
+    'click',
+    run
+);
+
+</script>
+
+</body>
+</html>
