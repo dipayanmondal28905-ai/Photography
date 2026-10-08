@@ -414,33 +414,47 @@ input{
         <div class="upload-grid">
 
 
-            <!-- SELFIE -->
+         <!-- SELFIE -->
 
-            <div class="drop">
+<div class="drop selfie-drop">
 
-                <img
-                    id="selfiePreview"
-                    src="sample-event-photo.png"
-                    alt="Selfie preview"
-                >
+    <div id="selfiePlaceholder" class="upload-placeholder">
 
-                <label>
+        <div class="upload-icon">✦</div>
 
-                    <strong>
-                        Guest selfie
-                    </strong>
+        <h3>Upload Your Selfie</h3>
 
-                    <br>
+        <p>
+            Take a clear front-facing selfie
+            to find your event photos.
+        </p>
 
-                    <input
-                        id="selfieInput"
-                        type="file"
-                        accept="image/*"
-                    >
+    </div>
 
-                </label>
+    <img
+        id="selfiePreview"
+        class="selfie-preview"
+        alt="Your selfie preview"
+        hidden
+    >
 
-            </div>
+    <label class="upload-button">
+
+        <span id="uploadButtonText">
+            Choose Selfie
+        </span>
+
+        <input
+            id="selfieInput"
+            type="file"
+            accept="image/*"
+            capture="user"
+            hidden
+        >
+
+    </label>
+
+</div>
 
 
             <!-- EVENT PHOTO -->
