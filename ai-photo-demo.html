@@ -438,19 +438,21 @@ input{
         hidden
     >
 
-    <label class="upload-button">
+   <label class="upload-button" for="selfieInput">
 
-        <span id="uploadButtonText">
-            Choose Selfie
-        </span>
+    <span id="uploadButtonText">
+        Choose Selfie
+    </span>
 
-        <input
-            id="selfieInput"
-            type="file"
-            accept="image/*"
-            capture="user"
-            hidden
-        >
+</label>
+
+<input
+    id="selfieInput"
+    type="file"
+    accept="image/*"
+    capture="user"
+    style="display:none;"
+>
 
     </label>
 
