@@ -4857,3 +4857,24 @@ button {
 
 }
 
+.ai-nav-link {
+    color: var(--gold) !important;
+    position: relative;
+}
+
+.ai-nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.ai-nav-link:hover::after {
+    transform: scaleX(1);
+}
