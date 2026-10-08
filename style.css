@@ -4878,3 +4878,7 @@ button {
 .ai-nav-link:hover::after {
     transform: scaleX(1);
 }
+
+.mobile-ai-link {
+    color: var(--gold) !important;
+}
