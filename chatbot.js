@@ -109,9 +109,9 @@ if (
  {
     return `📩 Contact Chirkut — Your Wedding Note
 
-📞 Phone: +91 999999999
-💬 WhatsApp: +91 999999999
-✉️ Email: xyz123@gmail.com
+📞 Phone: MOB-NUMBER
+💬 WhatsApp: MOB-NUMBER
+✉️ Email: @gmail.com
 
 Feel free to reach out to us for photography packages, wedding bookings, availability, or any other enquiries. We'd be happy to help you!`;
 }
