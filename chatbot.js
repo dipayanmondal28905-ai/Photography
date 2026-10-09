@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
 if (!response.ok) {
-    console.error("AI API error details:", data);
 
     throw new Error(
         data.details ||
