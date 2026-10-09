@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI Assistant | Chirkut — Your Wedding Note</title>
-
-    <meta
-        name="description"
-        content="Explore wedding photography services, packages and booking information with the Chirkut Assistant."
-    >
-
+    <meta name="description" content="Explore wedding photography services, packages and booking information with the Chirkut Assistant.">
     <meta name="theme-color" content="#17110e">
+
+    <!-- Premium fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -41,23 +39,18 @@
         body {
             min-height: 100vh;
             background:
-                radial-gradient(
-                    ellipse at 50% 0%,
-                    rgba(126, 77, 44, 0.2),
-                    transparent 48%
-                ),
+                radial-gradient(ellipse at 50% 0%, rgba(126, 77, 44, 0.2), transparent 48%),
                 var(--bg);
             color: var(--cream);
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: "DM Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        button,
-        input {
+        button, input {
             font: inherit;
         }
 
-        button,
-        a {
+        button, a {
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -66,26 +59,24 @@
             text-decoration: none;
         }
 
-        /* NAVIGATION */
-
+        /* Navigation */
         .navbar {
             width: 100%;
             min-height: 76px;
             padding: 16px 6%;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-
             border-bottom: 1px solid var(--border);
             background: rgba(17, 13, 11, 0.92);
         }
 
         .brand {
             color: var(--gold);
-            font-family: Georgia, "Times New Roman", serif;
+            font-family: "Playfair Display", Georgia, serif;
             font-size: 26px;
+            font-weight: 500;
             letter-spacing: 2px;
         }
 
@@ -93,7 +84,7 @@
             display: block;
             margin-top: 5px;
             color: var(--muted);
-            font-family: Arial, sans-serif;
+            font-family: "DM Sans", sans-serif;
             font-size: 9px;
             letter-spacing: 3px;
         }
@@ -111,8 +102,7 @@
             color: var(--gold-light);
         }
 
-        /* INTRODUCTION */
-
+        /* Main introduction */
         .page {
             width: min(1100px, 92%);
             margin: 0 auto;
@@ -133,10 +123,11 @@
 
         .intro h1 {
             margin: 18px 0 14px;
-            font-family: Georgia, "Times New Roman", serif;
+            font-family: "Playfair Display", Georgia, serif;
             font-size: clamp(34px, 5vw, 54px);
             font-weight: 400;
-            line-height: 1.16;
+            line-height: 1.2;
+            letter-spacing: -0.8px;
         }
 
         .intro h1 span {
@@ -152,36 +143,24 @@
             line-height: 1.9;
         }
 
-        /* CHAT CARD */
-
+        /* Chat card */
         .chat-card {
             width: min(760px, 100%);
             margin: 0 auto;
-
             overflow: hidden;
-
             background: rgba(29, 23, 19, 0.96);
             border: 1px solid var(--border);
             border-radius: 18px;
-
             box-shadow: 0 25px 85px rgba(0, 0, 0, 0.3);
         }
 
-        /* CHAT HEADER */
-
+        /* Chat header */
         .chat-header {
             display: flex;
             align-items: center;
             gap: 14px;
-
             padding: 20px 22px;
-
-            background: linear-gradient(
-                120deg,
-                #35251b,
-                #211812
-            );
-
+            background: linear-gradient(120deg, #35251b, #211812);
             border-bottom: 1px solid var(--border);
         }
 
@@ -189,15 +168,17 @@
             width: 48px;
             height: 48px;
             flex-shrink: 0;
-
             display: grid;
             place-items: center;
-
-            border: 1px solid var(--gold);
-            border-radius: 50%;
-
             color: var(--gold-light);
-            font-size: 25px;
+            background: rgba(213, 173, 123, 0.07);
+            border: 1px solid var(--gold);
+            border-radius: 15px;
+        }
+
+        .assistant-icon svg {
+            width: 27px;
+            height: 27px;
         }
 
         .assistant-info {
@@ -209,6 +190,7 @@
             color: var(--cream);
             font-size: 16px;
             font-weight: 600;
+            letter-spacing: -0.2px;
         }
 
         .assistant-info p {
@@ -225,93 +207,153 @@
             margin-right: 5px;
             border-radius: 50%;
             background: #a5c98d;
+            box-shadow: 0 0 8px rgba(165, 201, 141, 0.3);
         }
 
-        /* CHAT MESSAGES */
-
+        /* Messages */
         .messages {
             min-height: 310px;
             max-height: 440px;
-
             display: flex;
             flex-direction: column;
             align-items: stretch;
             gap: 14px;
-
             padding: 22px;
-
             overflow-y: auto;
             overscroll-behavior: contain;
             scroll-behavior: smooth;
-
             background:
-                radial-gradient(
-                    circle at 100% 0%,
-                    rgba(142, 94, 57, 0.09),
-                    transparent 45%
-                ),
+                radial-gradient(circle at 100% 0%, rgba(142, 94, 57, 0.09), transparent 45%),
                 var(--panel);
         }
 
         .message {
             max-width: 86%;
             padding: 13px 15px;
-
             border-radius: 13px;
-
-            font-size: 13px;
-            line-height: 1.8;
-
+            font-family: "DM Sans", sans-serif;
+            font-size: 14px;
+            line-height: 1.85;
             white-space: pre-wrap;
             overflow-wrap: anywhere;
         }
 
         .bot-message {
             align-self: flex-start;
-
             background: var(--panel-light);
             border: 1px solid rgba(213, 173, 123, 0.15);
             border-top-left-radius: 3px;
-
             color: var(--cream);
         }
 
         .user-message {
             align-self: flex-end;
-
             background: var(--gold);
+            border: 1px solid rgba(255, 246, 235, 0.12);
             border-top-right-radius: 3px;
-
             color: #21160e;
         }
 
-        /* SUGGESTED QUESTIONS */
+        /* Welcome panel */
+        .ai-welcome {
+            padding: 12px 4px 18px;
+            color: var(--cream);
+        }
 
+        .ai-welcome-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 25px;
+        }
+
+        .ai-robot-avatar {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            background: linear-gradient(145deg, #38291f, #211914);
+            border: 1px solid rgba(213, 173, 123, 0.65);
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .ai-robot-avatar svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .ai-welcome-header h2 {
+            margin-bottom: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--gold);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+        }
+
+        .ai-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #a5c98d;
+            box-shadow: 0 0 8px rgba(165, 201, 141, 0.4);
+        }
+
+        .ai-welcome-title {
+            margin-bottom: 12px;
+            color: var(--cream);
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 25px;
+            font-weight: 400;
+            line-height: 1.5;
+            letter-spacing: -0.4px;
+        }
+
+        .ai-welcome-description {
+            margin-bottom: 22px;
+            color: #c9bcb0;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .ai-welcome-prompt {
+            color: var(--gold-light);
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        /* Suggested questions */
         .suggestions {
             display: flex;
             flex-wrap: wrap;
             gap: 9px;
-
             padding: 0 22px 20px;
-
             background: var(--panel);
         }
 
         .suggestion {
             padding: 10px 13px;
-
             background: transparent;
             border: 1px solid rgba(213, 173, 123, 0.43);
             border-radius: 25px;
-
             color: var(--gold-light);
+            font-family: "DM Sans", sans-serif;
             font-size: 12px;
-
+            font-weight: 500;
             cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .suggestion:hover {
@@ -326,11 +368,9 @@
             outline-offset: 3px;
         }
 
-        /* MESSAGE FORM */
-
+        /* Message form */
         .input-area {
             padding: 17px 22px;
-
             background: #17110e;
             border-top: 1px solid var(--border);
         }
@@ -345,15 +385,13 @@
             flex: 1;
             min-width: 0;
             height: 50px;
-
             padding: 0 15px;
-
             background: #292019;
             border: 1px solid var(--border);
             border-radius: 10px;
             outline: none;
-
             color: var(--cream);
+            font-family: "DM Sans", sans-serif;
             font-size: 14px;
         }
 
@@ -363,28 +401,22 @@
 
         .chat-form input:focus {
             border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(213, 173, 123, 0.08);
         }
 
         .send-button {
             width: 50px;
             height: 50px;
             flex-shrink: 0;
-
             display: grid;
             place-items: center;
-
             background: var(--gold);
             border: none;
             border-radius: 10px;
-
             color: #21160e;
             font-size: 23px;
-
             cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                transform 0.2s ease;
+            transition: background 0.2s ease, transform 0.2s ease;
         }
 
         .send-button:hover {
@@ -397,22 +429,99 @@
 
         .disclaimer {
             margin-top: 12px;
-
             color: #9d8b7b;
             text-align: center;
-
             font-size: 10px;
             line-height: 1.7;
         }
 
-        /* FOOTER */
+        /* AI typing animation */
+        .ai-typing {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
 
+        .typing-robot {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            background: #38291f;
+            border: 1px solid rgba(213, 173, 123, 0.55);
+            border-radius: 11px;
+            font-size: 20px;
+            animation: robotPulse 1.4s ease-in-out infinite;
+        }
+
+        .typing-robot svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .typing-content {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .typing-label {
+            color: #d6b786;
+            font-family: "DM Sans", sans-serif;
+            font-size: 12px;
+        }
+
+        .typing-dots {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .typing-dots i {
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold-light);
+            animation: typingBounce 1s infinite ease-in-out;
+        }
+
+        .typing-dots i:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .typing-dots i:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.45;
+            }
+            30% {
+                transform: translateY(-5px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes robotPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 rgba(229, 193, 138, 0);
+            }
+            50% {
+                box-shadow: 0 0 14px rgba(229, 193, 138, 0.2);
+            }
+        }
+
+        /* Footer */
         .footer {
             padding: 27px 0 5px;
-
             color: #a18e7e;
             text-align: center;
-
             font-size: 11px;
             line-height: 1.9;
         }
@@ -422,8 +531,7 @@
             font-weight: 500;
         }
 
-        /* TABLET AND MOBILE */
-
+        /* Tablet and mobile */
         @media (max-width: 600px) {
             .navbar {
                 min-height: 66px;
@@ -476,7 +584,11 @@
             .assistant-icon {
                 width: 42px;
                 height: 42px;
-                font-size: 22px;
+            }
+
+            .assistant-icon svg {
+                width: 24px;
+                height: 24px;
             }
 
             .assistant-info h2 {
@@ -497,6 +609,18 @@
             .message {
                 max-width: 93%;
                 padding: 12px 13px;
+                font-size: 13px;
+            }
+
+            .ai-welcome {
+                padding: 8px 2px 15px;
+            }
+
+            .ai-welcome-title {
+                font-size: 21px;
+            }
+
+            .ai-welcome-description {
                 font-size: 13px;
             }
 
@@ -538,8 +662,6 @@
             }
         }
 
-        /* SMALL PHONES */
-
         @media (max-width: 360px) {
             .brand {
                 font-size: 19px;
@@ -564,351 +686,21 @@
             }
         }
 
-        /* REDUCED MOTION */
-
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
             *::after {
                 scroll-behavior: auto !important;
+                animation: none !important;
                 transition: none !important;
             }
         }
-/* Premium AI welcome panel */
-.ai-welcome {
-    padding: 26px 24px;
-    color: #f8efe4;
-}
-
-.ai-welcome-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 28px;
-}
-
-.ai-robot-avatar {
-    width: 52px;
-    height: 52px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e5c18a;
-    background: linear-gradient(145deg, #38291f, #211914);
-    border: 1px solid rgba(213, 174, 112, 0.65);
-    border-radius: 16px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
-}
-
-.ai-robot-avatar svg {
-    width: 28px;
-    height: 28px;
-}
-
-.ai-welcome-header h2 {
-    margin: 0 0 6px;
-    font-size: 19px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-}
-
-.ai-status {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    color: #d6b786;
-}
-
-.ai-status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #9bc69a;
-    box-shadow: 0 0 8px rgba(155, 198, 154, 0.6);
-}
-
-.ai-welcome-title {
-    font-size: 21px;
-    line-height: 1.5;
-    font-weight: 500;
-    margin: 0 0 12px;
-}
-
-.ai-welcome-description {
-    font-size: 14px;
-    line-height: 1.9;
-    color: #c9bcb0;
-    margin: 0 0 22px;
-}
-
-.ai-welcome-prompt {
-    font-size: 13px;
-    color: #e5c18a;
-    margin: 0;
-}
-
-@media (max-width: 480px) {
-    .ai-welcome {
-        padding: 20px 16px;
-    }
-
-    .ai-welcome-title {
-        font-size: 19px;
-    }
-
-    .ai-welcome-description {
-        font-size: 13px;
-    }
-}
-        ```css
-/* AI typing indicator */
-.ai-typing {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-}
-
-.typing-robot {
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e5c18a;
-    background: #38291f;
-    border: 1px solid rgba(213, 174, 112, 0.55);
-    border-radius: 11px;
-    animation: robotPulse 1.4s ease-in-out infinite;
-}
-
-.typing-robot svg {
-    width: 21px;
-    height: 21px;
-}
-
-.typing-content {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.typing-label {
-    font-size: 12px;
-    color: #d6b786;
-}
-
-.typing-dots {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.typing-dots i {
-    display: block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #e5c18a;
-    animation: typingBounce 1s infinite ease-in-out;
-}
-
-.typing-dots i:nth-child(2) {
-    animation-delay: 0.15s;
-}
-
-.typing-dots i:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-@keyframes typingBounce {
-    0%, 60%, 100% {
-        transform: translateY(0);
-        opacity: 0.45;
-    }
-    30% {
-        transform: translateY(-5px);
-        opacity: 1;
-    }
-}
-
-@keyframes robotPulse {
-    0%, 100% {
-        box-shadow: 0 0 0 rgba(229, 193, 138, 0);
-    }
-    50% {
-        box-shadow: 0 0 14px rgba(229, 193, 138, 0.2);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .typing-robot,
-    .typing-dots i {
-        animation: none;
-    }
-}
-
-/* Premium typography */
-.ai-welcome,
-.ai-welcome h2,
-.ai-welcome p {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
-.ai-welcome h2 {
-    font-weight: 650;
-    letter-spacing: -0.5px;
-}
-
-.ai-welcome-title {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    font-size: 25px;
-    font-weight: 550;
-    letter-spacing: -0.8px;
-    line-height: 1.5;
-}
-
-.ai-welcome-description {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.9;
-    letter-spacing: 0.1px;
-}
-
-.ai-welcome-prompt {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.15px;
-}
-
-/* Chat header */
-.ai-typing,
-.ai-typing .typing-label {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    letter-spacing: 0.1px;
-}
-
-/* Input typography */
-#ai-chat-input {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.1px;
-}
-
-/* Chat messages */
-.message {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    font-size: 14px;
-    line-height: 1.8;
-    letter-spacing: 0.1px;
-}
-
-/* Suggestion buttons */
-.suggestion {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.1px;
-}
-
-@media (max-width: 480px) {
-    .ai-welcome-title {
-        font-size: 21px;
-        letter-spacing: -0.5px;
-    }
-
-    .ai-welcome-description {
-        font-size: 13px;
-    }
-
-    .message {
-        font-size: 13px;
-    }
-}
-
-/* Chirkut AI — typography override */
-body,
-button,
-input,
-textarea,
-select {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-}
-
-/* Brand and main headings */
-.brand,
-.intro h1,
-.chat-header,
-.assistant-info,
-.ai-welcome h2 {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-    letter-spacing: -0.4px;
-}
-
-/* Main welcome heading */
-.ai-welcome-title {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-    font-size: 25px !important;
-    font-weight: 600 !important;
-    line-height: 1.5 !important;
-    letter-spacing: -0.7px !important;
-}
-
-/* Descriptive text */
-.ai-welcome-description {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-    font-size: 14px !important;
-    line-height: 1.9 !important;
-    font-weight: 400 !important;
-}
-
-/* Chat replies */
-.message,
-.message p {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-    font-size: 14px !important;
-    line-height: 1.8 !important;
-}
-
-/* Suggestion buttons */
-.suggestion,
-.send-button {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-    font-weight: 500 !important;
-}
-
-/* Input field */
-.chat-form input,
-#ai-chat-input {
-    font-family: "Trebuchet MS", Arial, sans-serif !important;
-    font-size: 14px !important;
-}
-
-@media (max-width: 480px) {
-    .ai-welcome-title {
-        font-size: 21px !important;
-    }
-
-    .message,
-    .message p {
-        font-size: 13px !important;
-    }
-}
-
-
-
     </style>
 </head>
 
 <body>
 
-    <!-- NAVIGATION -->
-
+    <!-- Navigation -->
     <header class="navbar">
         <a class="brand" href="index.html" aria-label="Chirkut home">
             CHIRKUT
@@ -920,8 +712,7 @@ select {
         </a>
     </header>
 
-    <!-- MAIN PAGE -->
-
+    <!-- Main page -->
     <main class="page">
 
         <section class="intro">
@@ -941,119 +732,101 @@ select {
             </p>
         </section>
 
-        <!-- CHAT INTERFACE -->
-
+        <!-- Chat interface -->
         <section class="chat-card" aria-label="Chirkut chat assistant">
 
             <div class="chat-header">
-
                 <div class="assistant-icon" aria-hidden="true">
-                    &#10022;
+                    <svg viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.7"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="7" width="16" height="13" rx="4"/>
+                        <path d="M12 3v4M9 12h.01M15 12h.01"/>
+                        <path d="M9 16h6M2 12h2M20 12h2"/>
+                    </svg>
                 </div>
 
                 <div class="assistant-info">
                     <h2>Chirkut Assistant</h2>
-
                     <p>
                         <span class="status-dot"></span>
                         Here to help with your wedding plans
                     </p>
                 </div>
-
             </div>
 
-            <!--
-                The IDs below must match chatbot.js.
-            -->
+            <!-- The IDs below must match chatbot.js -->
+            <div class="messages"
+                 id="ai-messages"
+                 aria-live="polite"
+                 aria-label="Conversation">
 
-            <div
-                class="messages"
-                id="ai-messages"
-                aria-live="polite"
-                aria-label="Conversation"
-            >
+                <div class="ai-welcome">
+                    <div class="ai-welcome-header">
+                        <div class="ai-robot-avatar" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="1.7"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="7" width="16" height="13" rx="4"/>
+                                <path d="M12 3v4M9 12h.01M15 12h.01"/>
+                                <path d="M9 16h6M2 12h2M20 12h2"/>
+                            </svg>
+                        </div>
 
-<div class="ai-welcome">
-    <div class="ai-welcome-header">
-        <div class="ai-robot-avatar">
-            <svg viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="1.7"
-                 stroke-linecap="round" stroke-linejoin="round"
-                 aria-hidden="true">
-                <rect x="4" y="7" width="16" height="13" rx="4"/>
-                <path d="M12 3v4M9 12h.01M15 12h.01"/>
-                <path d="M9 16h6M2 12h2M20 12h2"/>
-            </svg>
-        </div>
+                        <div>
+                            <h2>Meet Chirkut AI</h2>
+                            <span class="ai-status">
+                                <span class="ai-status-dot"></span>
+                                HERE TO HELP
+                            </span>
+                        </div>
+                    </div>
 
-        <div>
-            <h2>Meet Chirkut AI</h2>
-            <span class="ai-status">
-                <span class="ai-status-dot"></span>
-                HERE TO HELP
-            </span>
-        </div>
-    </div>
+                    <p class="ai-welcome-title">
+                        Every beautiful story starts with a conversation.
+                    </p>
 
-    <p class="ai-welcome-title">
-        Every beautiful story starts with a conversation.
-    </p>
+                    <p class="ai-welcome-description">
+                        Discover our photography services, explore packages,
+                        and get help with your wedding enquiries.
+                    </p>
 
-    <p class="ai-welcome-description">
-        Discover our photography services, explore packages,
-        and get help with your wedding enquiries.
-    </p>
+                    <p class="ai-welcome-prompt">
+                        What special moment can we help you capture?
+                    </p>
+                </div>
+            </div>
 
-    <p class="ai-welcome-prompt">
-        What special moment can we help you capture?
-    </p>
-</div>
-
-
-            <!-- SUGGESTED QUESTIONS -->
-
+            <!-- Suggested questions -->
             <div class="suggestions">
-
-                <button
-                    type="button"
-                    class="suggestion"
-                    data-message="What photography services do you offer?"
-                >
+                <button type="button"
+                        class="suggestion"
+                        data-message="What photography services do you offer?">
                     Our Services
                 </button>
 
-                <button
-                    type="button"
-                    class="suggestion"
-                    data-message="Tell me about your photography packages and pricing."
-                >
+                <button type="button"
+                        class="suggestion"
+                        data-message="Tell me about your photography packages and pricing.">
                     Packages &amp; Pricing
                 </button>
 
-                <button
-                    type="button"
-                    class="suggestion"
-                    data-message="How can I book a wedding photography session?"
-                >
+                <button type="button"
+                        class="suggestion"
+                        data-message="How can I book a wedding photography session?">
                     Wedding Booking
                 </button>
 
-                <button
-                    type="button"
-                    class="suggestion"
-                    data-message="How can I contact Chirkut?"
-                >
+                <button type="button"
+                        class="suggestion"
+                        data-message="How can I contact Chirkut?">
                     Contact Us
                 </button>
-
             </div>
 
-            <!-- MESSAGE INPUT -->
-
+            <!-- Message input -->
             <div class="input-area">
-
                 <form class="chat-form" id="ai-chat-form">
-
                     <input
                         type="text"
                         id="ai-chat-input"
@@ -1072,7 +845,6 @@ select {
                     >
                         &#10148;
                     </button>
-
                 </form>
 
                 <p class="disclaimer">
@@ -1080,13 +852,11 @@ select {
                     Please confirm final prices and availability directly
                     with Chirkut.
                 </p>
-
             </div>
 
         </section>
 
-        <!-- FOOTER -->
-
+        <!-- Footer -->
         <footer class="footer">
             <strong>CHIRKUT — YOUR WEDDING NOTE</strong>
             <br>
@@ -1095,8 +865,7 @@ select {
 
     </main>
 
-    <!-- LOAD CHATBOT LOGIC -->
-
+    <!-- Load chatbot logic -->
     <script src="chatbot.js"></script>
 
 </body>
