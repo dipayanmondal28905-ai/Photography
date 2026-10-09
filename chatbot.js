@@ -146,6 +146,28 @@ document.addEventListener("DOMContentLoaded", () => {
 Feel free to reach out to us for photography packages, wedding bookings, availability, or any other enquiries. We'd be happy to help you!`;
         }
 
+        // Assistant identity and introduction
+        if (
+            has(
+                "who are you",
+                "who r you",
+                "what is your name",
+                "whats your name",
+                "your name",
+                "introduce yourself",
+                "tell me about yourself",
+                "who created you",
+                "who is your owner",
+                "your owner",
+                "are you a bot",
+                "are you an ai",
+                "your details",
+                "chatbot details"
+            )
+        ) {
+            return "Hello! I'm Chirkut Assistant, the personal assistant of Chirkut's owner. You can call me Chirkut Assistant — that's my name! I'm here to help you explore our photography services, learn about packages, enquire about bookings, and get the information you need. Think of me as your first point of contact with Chirkut — Your Wedding Note. How may I assist you today?";
+        }
+
         // About Chirkut
         if (has("about", "who are you", "chirkut")) {
             return "Chirkut — Your Wedding Note is focused on preserving meaningful celebrations through photography and visual storytelling. Explore our website to learn more about our work and services.";
