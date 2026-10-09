@@ -5303,4 +5303,16 @@ button {
         transition: none;
     }
 }
+/* Chirkut AI Assistant Navigation */
+
+.nav-link[href="ai-assistant.html"],
+.mobile-ai-link[href="ai-assistant.html"] {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-link[href="ai-assistant.html"]:hover,
+.mobile-ai-link[href="ai-assistant.html"]:hover {
+    opacity: 0.85;
+}
 
