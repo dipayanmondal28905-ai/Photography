@@ -92,30 +92,30 @@ document.addEventListener("DOMContentLoaded", () => {
         // Contact details
        
 // Contact details
-if (
-    has(
-        "contact",
-        "phone",
-        "phone number",
-        "mobile number",
-        "email",
-        "email address",
-        "whatsapp",
-        "contact details",
-        "contact number",
-        "reach you",
-        "যোগাযোগ"
-    )
- {
-    return `📩 Contact Chirkut — Your Wedding Note
 
-📞 Phone: MOB-NUMBER
-💬 WhatsApp: MOB-NUMBER
-✉️ Email: @gmail.com
+        // Contact details
+        if (
+            has(
+                "contact",
+                "phone",
+                "phone number",
+                "mobile number",
+                "email",
+                "email address",
+                "whatsapp",
+                "contact details",
+                "contact number",
+                "reach you",
+                "যোগাযোগ"
+            )
+        ) {
+            return `📩 Contact Chirkut — Your Wedding Note
+
+📞 Phone: +91 999999999
+💬 WhatsApp: +91 999999999
+✉️ Email: xyz123@gmail.com
 
 Feel free to reach out to us for photography packages, wedding bookings, availability, or any other enquiries. We'd be happy to help you!`;
-}
-
         }
 
         // About Chirkut
