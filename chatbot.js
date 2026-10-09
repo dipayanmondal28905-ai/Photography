@@ -90,4 +90,4 @@ document.querySelectorAll(".chatbot-quick-actions [data-question]")
       sendMessage(button.dataset.question);
     });
   });
-```
+
