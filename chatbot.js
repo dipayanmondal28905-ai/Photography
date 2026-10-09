@@ -110,7 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Default response
-        return "Thanks for reaching out to Chirkut! I couldn't quite match that question. You can ask me about our services, pricing, wedding photography, pre-wedding shoots, booking or contact details.";
+      
+// Default response for unknown questions
+return "Thank you for your question! ✨ I’d be happy to help you with your enquiry. I may not have the exact information you’re looking for right now, and I don’t want to give you incorrect details. Please explore our website or contact the Chirkut team for personalised assistance. We’ll be happy to help you make your special moments memorable! ❤️";
+
     }
 
     // Send a message
