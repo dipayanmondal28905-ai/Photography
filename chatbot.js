@@ -1,6 +1,6 @@
 
 const CHATBOT_API_URL =
-  https:"//chirkut-ai-assistant.dipayanmondal28905.workers.dev";
+  https:"//chirkut-ai-assistant.dipayanmondal28905.workers.dev/";
 
 const toggle = document.getElementById("chatbotToggle");
 const panel = document.getElementById("chatbotPanel");
