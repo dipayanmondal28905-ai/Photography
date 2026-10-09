@@ -1,4 +1,4 @@
-```javascript
+
 const CHATBOT_API_URL =
   "https://chirkut-ai-assistant.dipayamondal28905.workers.dev";
 
