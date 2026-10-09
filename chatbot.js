@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     `HTTP error ${response.status}`
                 );
             }
+            console.log("AI API error details:", data);
 
             if (!data.reply) {
                 throw new Error("The AI returned no reply.");
