@@ -1,6 +1,9 @@
+// ========================================
+// CHIRKUT AI ASSISTANT
+// ========================================
 
 const WORKER_URL =
-    "https://chirkut-ai-assistant.dipayanmondal28905.workers.dev";
+    "https://chirkut-ai-assistant.dipayanmondal28905.workers.dev/";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("ai-chat-form");
@@ -10,17 +13,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const suggestions = document.querySelectorAll(".suggestion");
 
     if (!form || !input || !messages || !sendButton) {
-        console.error("Chirkut AI: Required HTML elements not found.");
+        console.error("Chirkut AI: Required HTML elements are missing.");
         return;
     }
 
-    let isSending = false;
     const history = [];
+    let isSending = false;
 
-    function addMessage(text, type) {
+    function addMessage(text, sender) {
         const element = document.createElement("div");
+
         element.className =
-            type === "user"
+            sender === "user"
                 ? "message user-message"
                 : "message bot-message";
 
@@ -31,12 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return element;
     }
 
-    async function sendMessage(value) {
-        const message = value.trim();
+    async function sendMessage(rawText) {
+        const text = rawText.trim();
 
-        if (!message || isSending) return;
+        if (!text || isSending) return;
 
-        addMessage(message, "user");
+        addMessage(text, "user");
+
         input.value = "";
         isSending = true;
         sendButton.disabled = true;
@@ -50,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    message,
+                    message: text,
                     history: history.slice(-10)
                 })
             });
@@ -58,23 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (!response.ok) {
-                console.error("Worker response:", data);
                 throw new Error(
                     data.details ||
                     data.error ||
-                    `Request failed (${response.status})`
+                    `HTTP error ${response.status}`
                 );
             }
 
-            if (typeof data.reply !== "string" || !data.reply.trim()) {
-                console.error("Unexpected response:", data);
-                throw new Error("The AI response was empty.");
+            if (!data.reply) {
+                throw new Error("The AI returned no reply.");
             }
 
             loading.textContent = data.reply;
 
             history.push(
-                { role: "user", content: message },
+                { role: "user", content: text },
                 { role: "assistant", content: data.reply }
             );
 
@@ -82,13 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Chirkut AI error:", error);
 
             loading.textContent =
-                "Sorry, I couldn't respond right now. Please try again.";
+                "Sorry, I couldn't connect right now. Please try again shortly.";
 
         } finally {
             isSending = false;
             sendButton.disabled = false;
-            messages.scrollTop = messages.scrollHeight;
             input.focus();
+            messages.scrollTop = messages.scrollHeight;
         }
     }
 
