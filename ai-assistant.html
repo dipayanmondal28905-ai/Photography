@@ -729,6 +729,27 @@
             z-index: 1;
         }
 
+/* Fix touch scrolling on mobile */
+@media (max-width: 600px) {
+    .chat-card {
+        overflow: visible;
+    }
+
+    .messages {
+        overflow-y: visible;
+        max-height: none;
+        min-height: auto;
+        touch-action: pan-y;
+    }
+
+    .chat-card,
+    .messages,
+    .suggestions,
+    .input-area {
+        touch-action: pan-y;
+    }
+}
+
     </style>
 </head>
 
