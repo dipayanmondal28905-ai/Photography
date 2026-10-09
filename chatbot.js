@@ -1,6 +1,5 @@
-
 const CHATBOT_API_URL =
-  https:"//chirkut-ai-assistant.dipayanmondal28905.workers.dev/";
+  "https://chirkut-ai-assistant.dipayamondal28905.workers.dev";
 
 const toggle = document.getElementById("chatbotToggle");
 const panel = document.getElementById("chatbotPanel");
@@ -10,84 +9,79 @@ const input = document.getElementById("chatbotInput");
 const messages = document.getElementById("chatbotMessages");
 const sendButton = form?.querySelector('button[type="submit"]');
 
-// Open and close the chat window
+function addMessage(text, type) {
+  const message = document.createElement("div");
+  message.className = type === "user" ? "chatbot-user-message" : "chatbot-bot-message";
+  message.textContent = text;
+  messages.appendChild(message);
+  messages.scrollTop = messages.scrollHeight;
+  return message;
+}
+
 toggle?.addEventListener("click", () => {
   panel.hidden = !panel.hidden;
   toggle.setAttribute("aria-expanded", String(!panel.hidden));
 
-  if (!panel.hidden) input.focus();
+  if (!panel.hidden) input?.focus();
 });
 
 closeButton?.addEventListener("click", () => {
   panel.hidden = true;
-  toggle.setAttribute("aria-expanded", "false");
-  toggle.focus();
+  toggle?.setAttribute("aria-expanded", "false");
+  toggle?.focus();
 });
 
-// Display a chat message safely
-function addMessage(text, sender) {
-  const message = document.createElement("div");
-  message.className =
-    sender === "user"
-      ? "chat-message user-message"
-      : "chat-message bot-message";
-
-  message.textContent = text;
-  messages.appendChild(message);
-  messages.scrollTop = messages.scrollHeight;
-
-  return message;
-}
-
-// Send a message to the AI backend
 async function sendMessage(text) {
-  const message = text.trim();
-  if (!message) return;
+  const question = text.trim();
 
-  addMessage(message, "user");
+  if (!question || !messages) return;
+
+  addMessage(question, "user");
   input.value = "";
   input.disabled = true;
-  sendButton.disabled = true;
+
+  if (sendButton) sendButton.disabled = true;
 
   const loading = addMessage("Thinking...", "bot");
 
   try {
     const response = await fetch(CHATBOT_API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message })
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: question })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "AI service unavailable.");
+      throw new Error(data.error || `Request failed: ${response.status}`);
     }
 
-    loading.textContent = data.reply || "No reply received.";
+    loading.textContent =
+      data.reply || "Sorry, I didn't receive a reply. Please try again.";
+
   } catch (error) {
+    console.error("Chatbot error:", error);
     loading.textContent =
       "Sorry, I couldn't respond right now. Please try again.";
-    console.error("Chatbot error:", error);
   } finally {
     input.disabled = false;
-    sendButton.disabled = false;
+    if (sendButton) sendButton.disabled = false;
     input.focus();
     messages.scrollTop = messages.scrollHeight;
   }
 }
 
-// Handle the message form
 form?.addEventListener("submit", (event) => {
   event.preventDefault();
   sendMessage(input.value);
 });
 
-// Quick-action buttons
 document.querySelectorAll(".chatbot-quick-actions [data-question]")
   .forEach((button) => {
     button.addEventListener("click", () => {
-      sendMessage(button.dataset.question);
+      sendMessage(button.dataset.question || "");
     });
   });
-
