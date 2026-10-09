@@ -3,7 +3,7 @@
 // ==========================================
 
 // Replace this with your actual Cloudflare Worker URL.
-const WORKER_URL = "https://chirkut-ai-assistant.example.workers.dev";
+const WORKER_URL = "https://photography-dgc.pages.dev/ai-assistant?utm_source=chatgpt.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("ai-chat-form");
