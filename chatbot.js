@@ -1,9 +1,6 @@
-// ==========================================
-// CHIRKUT AI ASSISTANT
-// ==========================================
 
-// Replace this with your actual Cloudflare Worker URL.
-const WORKER_URL = "https://photography-dgc.pages.dev/ai-assistant?utm_source=chatgpt.com";
+const WORKER_URL =
+    "https://chirkut-ai-assistant.dipayanmondal28905.workers.dev";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("ai-chat-form");
@@ -13,55 +10,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const suggestions = document.querySelectorAll(".suggestion");
 
     if (!form || !input || !messages || !sendButton) {
-        console.error("Chirkut AI: Chat elements not found.");
+        console.error("Chirkut AI: Required HTML elements not found.");
         return;
     }
 
-    const history = [];
     let isSending = false;
+    const history = [];
 
-    function addMessage(text, sender) {
-        const message = document.createElement("div");
-
-        message.className =
-            sender === "user"
+    function addMessage(text, type) {
+        const element = document.createElement("div");
+        element.className =
+            type === "user"
                 ? "message user-message"
                 : "message bot-message";
 
-        message.textContent = text;
-        messages.appendChild(message);
+        element.textContent = text;
+        messages.appendChild(element);
         messages.scrollTop = messages.scrollHeight;
 
-        return message;
+        return element;
     }
 
-    async function sendMessage(text) {
-        text = text.trim();
+    async function sendMessage(value) {
+        const message = value.trim();
 
-        if (!text || isSending) return;
+        if (!message || isSending) return;
 
-        if (
-            WORKER_URL === "PASTE_YOUR_WORKER_URL_HERE" ||
-            !WORKER_URL.startsWith("https://")
-        ) {
-            addMessage(
-                "The AI assistant is not connected yet. Please configure the Cloudflare Worker URL.",
-                "bot"
-            );
-            return;
-        }
-
-        addMessage(text, "user");
-        history.push({
-            role: "user",
-            content: text
-        });
-
+        addMessage(message, "user");
         input.value = "";
         isSending = true;
         sendButton.disabled = true;
 
-        const loadingMessage = addMessage("Thinking...", "bot");
+        const loading = addMessage("Thinking...", "bot");
 
         try {
             const response = await fetch(WORKER_URL, {
@@ -70,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    message: text,
+                    message,
                     history: history.slice(-10)
                 })
             });
@@ -78,33 +58,37 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (!response.ok) {
+                console.error("Worker response:", data);
                 throw new Error(
-                    data.error || "The AI service returned an error."
+                    data.details ||
+                    data.error ||
+                    `Request failed (${response.status})`
                 );
             }
 
-            if (!data.reply) {
+            if (typeof data.reply !== "string" || !data.reply.trim()) {
+                console.error("Unexpected response:", data);
                 throw new Error("The AI response was empty.");
             }
 
-            loadingMessage.textContent = data.reply;
+            loading.textContent = data.reply;
 
-            history.push({
-                role: "assistant",
-                content: data.reply
-            });
+            history.push(
+                { role: "user", content: message },
+                { role: "assistant", content: data.reply }
+            );
 
         } catch (error) {
             console.error("Chirkut AI error:", error);
 
-            loadingMessage.textContent =
-                "Sorry, I couldn't connect right now. Please try again shortly.";
+            loading.textContent =
+                "Sorry, I couldn't respond right now. Please try again.";
 
         } finally {
             isSending = false;
             sendButton.disabled = false;
-            input.focus();
             messages.scrollTop = messages.scrollHeight;
+            input.focus();
         }
     }
 
@@ -115,7 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     suggestions.forEach(button => {
         button.addEventListener("click", () => {
-            sendMessage(button.dataset.message || button.textContent);
+            sendMessage(
+                button.dataset.message || button.textContent
+            );
         });
     });
 });
