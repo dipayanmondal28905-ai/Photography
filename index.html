@@ -963,7 +963,70 @@
 
     <!-- Main JavaScript - Will be added after all pages are completed -->
     <script src="script.js"></script>
-    
+    <!-- CHIRKUT AI ASSISTANT -->
+<div id="ai-chatbot" class="ai-chatbot" aria-hidden="true">
+
+    <div class="ai-chat-header">
+        <div class="ai-chat-brand">
+            <span class="ai-chat-icon">✦</span>
+            <div>
+                <h3>Chirkut AI Assistant</h3>
+                <p>Your Wedding Planning Companion</p>
+            </div>
+        </div>
+
+        <button
+            type="button"
+            id="ai-chat-close"
+            class="ai-chat-close"
+            aria-label="Close chat"
+        >&times;</button>
+    </div>
+
+    <div id="ai-chat-messages" class="ai-chat-messages" aria-live="polite">
+        <div class="ai-message ai-message-bot">
+            Welcome to Chirkut! ✦<br><br>
+            Looking for wedding photography, cinematic films, or package details?
+            Ask me anything.
+        </div>
+    </div>
+
+    <div class="ai-chat-suggestions">
+        <button type="button" class="ai-suggestion" data-message="What photography services do you offer?">
+            Our Services
+        </button>
+
+        <button type="button" class="ai-suggestion" data-message="Tell me about your photography packages and pricing.">
+            Packages & Pricing
+        </button>
+
+        <button type="button" class="ai-suggestion" data-message="How can I book a wedding photography session?">
+            Book a Session
+        </button>
+    </div>
+
+    <form id="ai-chat-form" class="ai-chat-form">
+        <input
+            type="text"
+            id="ai-chat-input"
+            placeholder="Ask Chirkut anything..."
+            autocomplete="off"
+            maxlength="1000"
+            aria-label="Type your message"
+            required
+        >
+
+        <button type="submit" id="ai-chat-send" aria-label="Send message">
+            ➤
+        </button>
+    </form>
+
+    <div class="ai-chat-footer">
+        Powered by AI · Chirkut — Your Wedding Note
+    </div>
+
+</div>
+<!-- END CHIRKUT AI ASSISTANT -->
 
 
 </body>
