@@ -1,70 +1,67 @@
-const toggle = document.getElementById("chatbotToggle");
-const panel = document.getElementById("chatbotPanel");
-const closeButton = document.getElementById("chatbotClose");
-const form = document.getElementById("chatbotForm");
-const input = document.getElementById("chatbotInput");
-const messages = document.getElementById("chatbotMessages");
+const CHATBOT_API_URL =
+  "https://chirkut-ai-assistant.dipayamondal28905.workers.dev";
 
-function setChatOpen(open) {
-    panel.hidden = !open;
-    toggle.setAttribute("aria-expanded", String(open));
+const chatForm = document.getElementById("chat-form");
+const chatInput = document.getElementById("chat-input");
+const chatMessages = document.getElementById("chat-messages");
+const sendButton = document.getElementById("chat-send");
 
-    if (open) input.focus();
+function addMessage(text, sender) {
+  const message = document.createElement("div");
+  message.className = `chat-message ${sender}`;
+  message.textContent = text;
+
+  chatMessages.appendChild(message);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  return message;
 }
 
-toggle.addEventListener("click", () => {
-    setChatOpen(panel.hidden);
-});
+async function sendMessage(messageText) {
+  const message = messageText.trim();
 
-closeButton.addEventListener("click", () => {
-    setChatOpen(false);
-});
+  if (!message) return;
 
-function addMessage(text, type) {
-    const message = document.createElement("div");
-    message.className = `chat-message ${type}-message`;
-    message.textContent = text;
+  addMessage(message, "user");
+  chatInput.value = "";
+  chatInput.disabled = true;
+  sendButton.disabled = true;
 
-    messages.appendChild(message);
-    messages.scrollTop = messages.scrollHeight;
-}
+  const loadingMessage = addMessage("Thinking...", "bot");
 
-function handleDemoMessage(text) {
-    const question = text.toLowerCase();
-
-    if (question.includes("service")) {
-        return "We offer wedding photography, candid photography, pre-wedding shoots and cinematic wedding films.";
-    }
-
-    if (
-        question.includes("contact") ||
-        question.includes("whatsapp") ||
-        question.includes("book")
-    ) {
-        return "You can reach the Chirkut team through the Contact Us page.";
-    }
-
-    return "This is the chatbot demo. We'll connect a real AI model in the next step so I can answer a wider range of questions.";
-}
-
-function sendMessage(text) {
-    const cleanText = text.trim();
-    if (!cleanText) return;
-
-    addMessage(cleanText, "user");
-    input.value = "";
-
-    const reply = handleDemoMessage(cleanText);
-    addMessage(reply, "bot");
-}
-
-form.addEventListener("submit", event => {
-    event.preventDefault();
-    sendMessage(input.value);
-});
-
-document.querySelectorAll("[data-question]").forEach(button => {
-    button.addEventListener("click", () => {
-        sendMessage(button.dataset.question);
+  try {
+    const response = await fetch(CHATBOT_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: message
+      })
     });
-});
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI service unavailable.");
+    }
+
+    loadingMessage.textContent = data.reply;
+  } catch (error) {
+    loadingMessage.textContent =
+      "Sorry, I couldn't respond right now. Please try again.";
+    console.error("Chatbot error:", error);
+  } finally {
+    chatInput.disabled = false;
+    sendButton.disabled = false;
+    chatInput.focus();
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+}
+
+if (chatForm && chatInput && chatMessages && sendButton) {
+  chatForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    sendMessage(chatInput.value);
+  });
+}
