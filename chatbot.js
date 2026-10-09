@@ -115,7 +115,7 @@ if (
 
 Feel free to reach out to us for photography packages, wedding bookings, availability, or any other enquiries. We'd be happy to help you!`;
 }
-```
+
         }
 
         // About Chirkut
@@ -141,19 +141,42 @@ return "Thank you for your question! ✨ I’d be happy to help you with your en
     }
 
     // Send a message
-    function sendMessage(value) {
-        const message = value.trim();
+function showTypingIndicator() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message bot-message ai-typing";
 
-        if (!message) return;
+    wrapper.innerHTML = `
+        <span class="typing-robot">🤖</span>
+        <span class="typing-content">
+            <span class="typing-label">Chirkut AI is thinking</span>
+            <span class="typing-dots">
+                <i></i><i></i><i></i>
+            </span>
+        </span>
+    `;
 
-        addMessage(message, "user");
-        input.value = "";
-        input.focus();
+    messages.appendChild(wrapper);
+    messages.scrollTop = messages.scrollHeight;
 
-        window.setTimeout(() => {
-            addMessage(getReply(message), "bot");
-        }, 300);
-    }
+    return wrapper;
+}
+
+function sendMessage(value) {
+    const message = value.trim();
+    if (!message) return;
+
+    addMessage(message, "user");
+    input.value = "";
+    input.focus();
+
+    const typingIndicator = showTypingIndicator();
+
+    window.setTimeout(() => {
+        typingIndicator.remove();
+        addMessage(getReply(message), "bot");
+    }, 1100);
+}
+
 
     // Handle form submission
     form.addEventListener("submit", event => {
