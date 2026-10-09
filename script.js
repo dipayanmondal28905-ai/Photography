@@ -1108,3 +1108,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+.chatbot-panel[hidden] {
+  display: none !important;
+}
+
+.chatbot-panel:not([hidden]) {
+  display: flex;
+}
