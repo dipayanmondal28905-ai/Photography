@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Services
-        if (has("service", "services", "what do you offer", "what do you do")) {
+        if (has("service", "services", "photography", "what do you offer", "what do you do")) {
             return "Our photography services include:\n\n• Wedding Photography\n• Candid Photography\n• Pre-Wedding Shoots\n• Cinematic Wedding Films\n• Event Photography\n\nWhich service would you like to know more about?";
         }
 
