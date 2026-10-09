@@ -172,6 +172,32 @@ Feel free to reach out to us for photography packages, wedding bookings, availab
         if (has("about", "who are you", "chirkut")) {
             return "Chirkut — Your Wedding Note is focused on preserving meaningful celebrations through photography and visual storytelling. Explore our website to learn more about our work and services.";
         }
+        
+        // Customer dissatisfaction and complaints
+        if (
+            has(
+                "not satisfied",
+                "unsatisfied",
+                "unhappy",
+                "disappointed",
+                "bad service",
+                "poor service",
+                "worst service",
+                "not good",
+                "very bad",
+                "complaint",
+                "issue",
+                "problem",
+                "waste of money",
+                "not worth it",
+                "unprofessional",
+                "খারাপ",
+                "সন্তুষ্ট নই"
+            )
+        ) {
+            return "I'm sorry to hear that your experience has not met your expectations. At Chirkut — Your Wedding Note, we value every client's feedback and take concerns seriously. Could you please tell us a little more about what went wrong? You can also contact our team directly so we can understand your concern and help you find a suitable resolution. Thank you for bringing this to our attention.";
+        }
+
 
         // Thank you
         if (has("thank", "thanks", "ধন্যবাদ")) {
