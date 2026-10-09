@@ -43,6 +43,34 @@ document.addEventListener("DOMContentLoaded", () => {
         if (has("price", "pricing", "cost", "package", "budget", "দাম", "টাকা")) {
             return "Our photography packages can be tailored to your event, coverage duration and requirements. Please contact our team with your event date and location to discuss a personalised quote.";
         }
+        
+        // Pricing and packages
+        const asksPrice = has(
+            "price", "pricing", "cost", "costs", "charge", "charges",
+            "how much", "rate", "rates", "budget", "package", "packages",
+            "দাম", "টাকা"
+        );
+
+        if (asksPrice) {
+            // Pre-wedding shoot pricing
+            if (has("pre wedding", "prewedding", "couple shoot", "engagement shoot")) {
+                return "Our pre-wedding shoot charges depend on the location, shoot duration, and the photography package you choose. Please contact Chirkut directly for the latest pricing and a personalised quote. We don't want to give you an incorrect price.";
+            }
+
+            // Candid photography pricing
+            if (has("candid")) {
+                return "Our candid photography charges depend on your event, coverage duration, and requirements. Please contact Chirkut for the latest pricing and a personalised quote.";
+            }
+
+            // Cinematic film pricing
+            if (has("cinematic", "videography", "wedding video", "wedding film")) {
+                return "Our cinematic film packages depend on the event, coverage duration, and requirements. Please contact Chirkut for the latest pricing and a personalised quote.";
+            }
+
+            // General pricing
+            return "Our photography packages depend on your event, location, coverage duration, and requirements. Please contact Chirkut for the latest pricing and a personalised quote.";
+        }
+
 
         // Booking
         if (has("booking", "book", "reserve", "availability", "available date")) {
