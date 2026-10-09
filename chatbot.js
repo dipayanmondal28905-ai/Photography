@@ -106,7 +106,7 @@ if (
         "reach you",
         "যোগাযোগ"
     )
-) {
+ {
     return `📩 Contact Chirkut — Your Wedding Note
 
 📞 Phone: +91 999999999
