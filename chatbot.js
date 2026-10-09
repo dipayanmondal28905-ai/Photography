@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Contact details
-       ```javascript
+       
 // Contact details
 if (
     has(
