@@ -1,43 +1,61 @@
+```javascript
 const CHATBOT_API_URL =
   "https://chirkut-ai-assistant.dipayamondal28905.workers.dev";
 
-const chatForm = document.getElementById("chat-form");
-const chatInput = document.getElementById("chat-input");
-const chatMessages = document.getElementById("chat-messages");
-const sendButton = document.getElementById("chat-send");
+const toggle = document.getElementById("chatbotToggle");
+const panel = document.getElementById("chatbotPanel");
+const closeButton = document.getElementById("chatbotClose");
+const form = document.getElementById("chatbotForm");
+const input = document.getElementById("chatbotInput");
+const messages = document.getElementById("chatbotMessages");
+const sendButton = form?.querySelector('button[type="submit"]');
 
+// Open and close the chat window
+toggle?.addEventListener("click", () => {
+  panel.hidden = !panel.hidden;
+  toggle.setAttribute("aria-expanded", String(!panel.hidden));
+
+  if (!panel.hidden) input.focus();
+});
+
+closeButton?.addEventListener("click", () => {
+  panel.hidden = true;
+  toggle.setAttribute("aria-expanded", "false");
+  toggle.focus();
+});
+
+// Display a chat message safely
 function addMessage(text, sender) {
   const message = document.createElement("div");
-  message.className = `chat-message ${sender}`;
-  message.textContent = text;
+  message.className =
+    sender === "user"
+      ? "chat-message user-message"
+      : "chat-message bot-message";
 
-  chatMessages.appendChild(message);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  message.textContent = text;
+  messages.appendChild(message);
+  messages.scrollTop = messages.scrollHeight;
 
   return message;
 }
 
-async function sendMessage(messageText) {
-  const message = messageText.trim();
-
+// Send a message to the AI backend
+async function sendMessage(text) {
+  const message = text.trim();
   if (!message) return;
 
   addMessage(message, "user");
-  chatInput.value = "";
-  chatInput.disabled = true;
+  input.value = "";
+  input.disabled = true;
   sendButton.disabled = true;
 
-  const loadingMessage = addMessage("Thinking...", "bot");
+  const loading = addMessage("Thinking...", "bot");
 
   try {
     const response = await fetch(CHATBOT_API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: message
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message })
     });
 
     const data = await response.json();
@@ -46,22 +64,30 @@ async function sendMessage(messageText) {
       throw new Error(data.error || "AI service unavailable.");
     }
 
-    loadingMessage.textContent = data.reply;
+    loading.textContent = data.reply || "No reply received.";
   } catch (error) {
-    loadingMessage.textContent =
+    loading.textContent =
       "Sorry, I couldn't respond right now. Please try again.";
     console.error("Chatbot error:", error);
   } finally {
-    chatInput.disabled = false;
+    input.disabled = false;
     sendButton.disabled = false;
-    chatInput.focus();
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    input.focus();
+    messages.scrollTop = messages.scrollHeight;
   }
 }
 
-if (chatForm && chatInput && chatMessages && sendButton) {
-  chatForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    sendMessage(chatInput.value);
+// Handle the message form
+form?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  sendMessage(input.value);
+});
+
+// Quick-action buttons
+document.querySelectorAll(".chatbot-quick-actions [data-question]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      sendMessage(button.dataset.question);
+    });
   });
-}
+```
