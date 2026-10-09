@@ -61,13 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const data = await response.json();
+if (!response.ok) {
+    console.error("AI API error details:", data);
 
-            if (!response.ok) {
-                throw new Error(
-                    data.details ||
-                    data.error ||
-                    `HTTP error ${response.status}`
-                );
+    throw new Error(
+        data.details ||
+        data.error ||
+        `HTTP error ${response.status}`
+    );
+}
             }
             console.log("AI API error details:", data);
 
